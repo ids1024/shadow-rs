@@ -50,6 +50,7 @@ impl Shadow {
 
 #[derive(Default)]
 pub struct ShadowIter {
+    started: bool,
     done: bool,
 }
 
@@ -57,6 +58,7 @@ impl Iterator for ShadowIter {
     type Item = Shadow;
 
     fn next(&mut self) -> Option<Shadow> {
+        self.started = true;
         if !self.done {
             let spwd = unsafe { libc::getspent() };
             if spwd.is_null() {
@@ -68,6 +70,14 @@ impl Iterator for ShadowIter {
             }
         } else {
             None
+        }
+    }
+}
+
+impl Drop for ShadowIter {
+    fn drop(&mut self) {
+        if self.started && !self.done {
+            unsafe { libc::endspent() };
         }
     }
 }
