@@ -34,14 +34,12 @@ impl Shadow {
     pub fn from_name(user: &str) -> Option<Shadow> {
         let c_user = CString::new(user).unwrap();
 
-        unsafe {
-            let spwd = libc::getspnam(c_user.as_ptr());
+        let spwd = unsafe { libc::getspnam(c_user.as_ptr()) };
 
-            if spwd.is_null() {
-                None
-            } else {
-                Some(Shadow::from_ptr(spwd))
-            }
+        if spwd.is_null() {
+            None
+        } else {
+            Some(unsafe { Shadow::from_ptr(spwd) })
         }
     }
 
@@ -60,15 +58,13 @@ impl Iterator for ShadowIter {
 
     fn next(&mut self) -> Option<Shadow> {
         if !self.done {
-            unsafe {
-                let spwd = libc::getspent();
-                if spwd.is_null() {
-                    libc::endspent();
-                    self.done = true;
-                    None
-                } else {
-                    Some(Shadow::from_ptr(spwd))
-                }
+            let spwd = unsafe { libc::getspent() };
+            if spwd.is_null() {
+                unsafe { libc::endspent() };
+                self.done = true;
+                None
+            } else {
+                Some(unsafe { Shadow::from_ptr(spwd) })
             }
         } else {
             None
