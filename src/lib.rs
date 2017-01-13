@@ -14,7 +14,7 @@ pub struct Shadow {
     pub max: i64,
     pub warn: i64,
     pub inactive: i64,
-    pub expire: i64
+    pub expire: i64,
 }
 
 impl Shadow {
@@ -27,7 +27,7 @@ impl Shadow {
             max: (*spwd).sp_max,
             warn: (*spwd).sp_warn,
             inactive: (*spwd).sp_inact,
-            expire: (*spwd).sp_expire
+            expire: (*spwd).sp_expire,
         }
     }
 
@@ -52,7 +52,7 @@ impl Shadow {
 
 #[derive(Default)]
 pub struct ShadowIter {
-    done: bool
+    done: bool,
 }
 
 impl Iterator for ShadowIter {
