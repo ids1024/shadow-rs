@@ -6,6 +6,38 @@
 //!
 //! Since the relevant functions in libc are not thread-safe, this library is
 //! not either.
+//!
+//! # Examples
+//!
+//! Print all shadow entries:
+//!
+//! ```
+//! extern crate shadow;
+//! 
+//! use shadow::Shadow;
+
+//! fn main() {
+//!     for i in Shadow::iter_all() {
+//!         println!("{:?}", i);
+//!     }
+//! }
+//! ```
+//!
+//! Verify password is correct (requires
+//! [pwhash](https://crates.io/crates/pwhash)):
+//!
+//! ```
+//! extern crate shadow;
+//! extern crate pwhash;
+//!
+//! use shadow::Shadow;
+//!
+//! fn main() {
+//! let hash = Shadow::from_name("username").unwrap();
+//! let correct = pwhash::unix::verify("password", &hash.password);
+//! println!("Password correct: {}", correct); 
+//! }
+//! ```
 
 
 extern crate libc;
