@@ -1,3 +1,13 @@
+//! This modules provides a wrapper around the libc functions in `shadow.h` for
+//! handling the `/etc/shadow` file, which stores encrypted password for users.
+//!
+//! It should work under Linux and some other Unix variants. Root permission is
+//! necessary to access the shadow file.
+//!
+//! Since the relevant functions in libc are not thread-safe, this library is
+//! not either.
+
+
 extern crate libc;
 
 
@@ -5,15 +15,24 @@ use std::ffi::CString;
 use std::ffi::CStr;
 
 
+/// Represents an entry in `/etc/shadow`
 #[derive(Debug)]
 pub struct Shadow {
+    /// user login name
     pub name: String,
+    /// encrypted password
     pub password: String,
+    /// last password change
     pub last_change: i64,
+    /// days until change allowed
     pub min: i64,
+    /// days before change required
     pub max: i64,
+    /// days warning for expiration
     pub warn: i64,
+    /// days before account inactive
     pub inactive: i64,
+    /// date when account expires
     pub expire: i64,
 }
 
@@ -31,6 +50,7 @@ impl Shadow {
         }
     }
 
+    /// Gets a `Shadow` entry for the given username, or returns `None`
     pub fn from_name(user: &str) -> Option<Shadow> {
         let c_user = CString::new(user).unwrap();
 
@@ -43,11 +63,13 @@ impl Shadow {
         }
     }
 
+    /// Returns iterator over all entries in `shadow` file
     pub fn iter_all() -> ShadowIter {
         ShadowIter::default()
     }
 }
 
+/// Iterator over `Shadow` entries
 #[derive(Default)]
 pub struct ShadowIter {
     started: bool,
