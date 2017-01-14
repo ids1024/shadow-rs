@@ -12,14 +12,8 @@
 //! Print all shadow entries:
 //!
 //! ```
-//! extern crate shadow;
-//! 
-//! use shadow::Shadow;
-
-//! fn main() {
-//!     for i in Shadow::iter_all() {
-//!         println!("{:?}", i);
-//!     }
+//! for i in shadow::Shadow::iter_all() {
+//!     println!("{:?}", i);
 //! }
 //! ```
 //!
@@ -27,16 +21,9 @@
 //! [pwhash](https://crates.io/crates/pwhash)):
 //!
 //! ```
-//! extern crate shadow;
-//! extern crate pwhash;
-//!
-//! use shadow::Shadow;
-//!
-//! fn main() {
-//! let hash = Shadow::from_name("username").unwrap();
+//! let hash = shadow::Shadow::from_name("username").unwrap();
 //! let correct = pwhash::unix::verify("password", &hash.password);
 //! println!("Password correct: {}", correct); 
-//! }
 //! ```
 
 
