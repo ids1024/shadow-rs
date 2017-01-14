@@ -2,6 +2,9 @@
 name = "shadow"
 version = "0.0.1"
 authors = ["Ian D. Scott <ian@iandouglasscott.com>"]
+description = "Bindings for libc /etc/shadow password functions"
+homepage = "https://github.com/ids1024/shadow-rs"
+repository = "https://github.com/ids1024/shadow-rs"
 license = "MIT"
 
 [dependencies]
