@@ -41,6 +41,7 @@ use std::ffi::CStr;
 
 /// Represents an entry in `/etc/shadow`
 #[derive(Debug)]
+#[cfg(target_pointer_width = "64")]
 pub struct Shadow {
     /// user login name
     pub name: String,
@@ -58,6 +59,25 @@ pub struct Shadow {
     pub inactive: i64,
     /// date when account expires
     pub expire: i64,
+}
+#[cfg(target_pointer_width = "32")]
+pub struct Shadow {
+    /// user login name
+    pub name: String,
+    /// encrypted password
+    pub password: String,
+    /// last password change
+    pub last_change: i32,
+    /// days until change allowed
+    pub min: i32,
+    /// days before change required
+    pub max: i32,
+    /// days warning for expiration
+    pub warn: i32,
+    /// days before account inactive
+    pub inactive: i32,
+    /// date when account expires
+    pub expire: i32,
 }
 
 impl Shadow {
